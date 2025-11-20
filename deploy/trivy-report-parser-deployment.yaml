@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivy-report-serializer
+  namespace: trivy-system
+  labels:
+    app: trivy-report-serializer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trivy-report-serializer
+  template:
+    metadata:
+      labels:
+        app: trivy-report-serializer
+    spec:
+      containers:
+        - name: trivy-report-serializer
+          image: mushroomhat/trivy-report-serializer:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          volumeMounts:
+            - name: reports
+              mountPath: /app/incoming_reports
+      volumes:
+        - name: reports
+          persistentVolumeClaim:
+            claimName: trivy-serializer-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trivy-report-serializer
+  namespace: trivy-system
+  labels:
+    app: trivy-report-serializer
+spec:
+  selector:
+    app: trivy-report-serializer
+  ports:
+    - name: http
+      port: 8080 # the port Trivy operator will use to send webhook requests
+      targetPort: 8080 # the containerPort in your Deployment
+  type: ClusterIP # internal cluster service
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: trivy-serializer-pvc
+  namespace: trivy-system
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+    limits:
+      storage: 5Gi
