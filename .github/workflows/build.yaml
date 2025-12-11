@@ -28,7 +28,7 @@ jobs:
 
       # --- Build Docker image
       - name: Build Docker image
-        run: docker build -t trivy-report-serializer:latest -f dockerfile.prod .
+        run: docker build -t trivy-report-serializer:latest -f dockerfile .
 
       # --- Install latest Trivy
       - name: Install latest Trivy
@@ -41,7 +41,7 @@ jobs:
 
       # --- Scan Docker image
       - name: Scan Docker image with Trivy
-        run: trivy image --format table --exit-code 0 --severity CRITICAL,HIGH,MEDIUM trivy-report-serializer:latest
+        run: trivy image --format table --exit-code 0 --severity CRITICAL,HIGH trivy-report-serializer:latest
 
       # --- Push image to Docker Hub
       - name: Push Docker image

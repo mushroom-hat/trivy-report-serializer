@@ -28,7 +28,6 @@ async def trivy_webhook(request: Request, db: Session = Depends(get_db)):
     if kind == "VulnerabilityReport":
         return await handle_vulnerability_report(body, db)
 
-    # Unknown type
     return JSONResponse(
         status_code=400,
         content={"error": f"Unsupported report type: {kind}"}
