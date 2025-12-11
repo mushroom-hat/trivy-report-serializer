@@ -19,23 +19,38 @@ def get_db():
 
 
 @router.post("/trivy-webhook")
-async def trivy_webhook(
-    request: Request,
-    db: Session = Depends(get_db),
-):
+async def trivy_webhook(request: Request, db: Session = Depends(get_db)):
     body = await request.json()
 
+    # Identify the payload kind
+    kind = body.get("kind") or body.get("report", {}).get("kind")
+
+    if kind == "VulnerabilityReport":
+        return await handle_vulnerability_report(body, db)
+
+    # Unknown type
+    return JSONResponse(
+        status_code=400,
+        content={"error": f"Unsupported report type: {kind}"}
+    )
+
+async def handle_vulnerability_report(body: dict, db: Session):
     namespace = body.get("metadata", {}).get("namespace")
     image_info = parse_image_info(body)
     update_ts = body["report"].get("updateTimestamp")
     scanner_version = body.get("scanner", {}).get("version")
     vulns = body["report"].get("vulnerabilities", [])
 
-    image_info = parse_image_info(body)
+    # Get project from image path
     project = get_or_create_project(db, image_info["path"])
 
     # Upsert image
-    image = upsert_image(db, namespace, image_info, project_id=project.id)
+    image = upsert_image(
+        db,
+        namespace=namespace,
+        image_info=image_info,
+        project_id=project.id
+    )
 
     # Upsert CVE findings
     for v in vulns:
@@ -44,4 +59,4 @@ async def trivy_webhook(
 
     db.commit()
 
-    return {"status": "ok", "namespace": namespace}
+    return {"status": "ok", "type": "VulnerabilityReport", "namespace": namespace}
