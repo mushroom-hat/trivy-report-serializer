@@ -2,9 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from datetime import datetime
 import os
+from config import settings
 
 # DB URL can be set via environment variable
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@db:5432/trivy")
+DATABASE_URL = settings.database_url
 
 # SQLAlchemy engine
 engine = create_engine(DATABASE_URL, echo=False)

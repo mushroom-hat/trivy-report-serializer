@@ -17,7 +17,7 @@ services:
     container_name: trivy-report-serializer-app
     build:
       context: .
-      dockerfile: dockerfile.dev
+      dockerfile: dockerfile.local
     depends_on:
       - db
     environment:

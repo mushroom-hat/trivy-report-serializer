@@ -1,0 +1,71 @@
+// ============================================
+// ENUMERATIONS
+// ============================================
+
+Enum severity_type {
+  critical
+  high
+  medium
+  low
+  unknown
+}
+
+// ============================================
+// TABLES
+// ============================================
+
+Table projects {
+  id          serial      [pk]
+  user        text        [not null]
+  project     text        [not null]
+  created_at  timestamptz [default: `NOW()`]
+
+  indexes {
+    (user, project) [unique]
+  }
+}
+
+Table images {
+  id          serial      [pk]
+  digest      text        [not null]
+  path        text        [not null]
+  project_id int [not null, ref: > projects.id]
+  tag         text        [not null]
+  created_at  timestamptz [default: `NOW()`]
+  registry    text
+  os_family   text
+  os_name     text
+  namespace   text
+  cluster     text
+  env         text
+  is_running  boolean     [default: true]
+}
+
+Table cve_findings {
+  id            serial      [pk]
+  image_id      int         [not null, ref: > images.id]
+  cve_id        text
+  package_purl  text
+  package_name  text
+  installed_ver text
+  fixed_ver     text
+  severity      text
+  score         numeric(3,1)
+  title         text
+  primary_link  text
+  published_at  timestamptz  [not null]
+  first_seen_at timestamptz  [not null]
+  last_seen_at  timestamptz  [not null]
+  due_at        timestamptz  [not null]
+  created_at    timestamptz  [default: `NOW()`]
+  links         json
+  target        text
+}
+
+Table cve_detections {
+  id             serial      [pk]
+  finding_id     int         [not null, ref: > cve_findings.id]
+  detected_at    timestamptz [not null]
+  scanner_name   text        [default: 'trivy']
+  scanner_version text
+}

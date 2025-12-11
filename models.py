@@ -1,15 +1,26 @@
-from sqlalchemy import Column, Integer, String, Text, Numeric, TIMESTAMP, ForeignKey, JSON
+from sqlalchemy import Column, Integer, String, Text, Numeric, TIMESTAMP, ForeignKey, JSON, UniqueConstraint
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime
 
 Base = declarative_base()
 
+class Project(Base):
+    __tablename__ = "projects"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user = Column(Text, nullable=False)
+    project = Column(Text, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
+
+    __table_args__ = (
+        UniqueConstraint("user", "project", name="uq_user_project"),
+    )
 
 class Image(Base):
     __tablename__ = "images"
 
     id = Column(Integer, primary_key=True)
-    digest = Column(Text, unique=True, nullable=False)
+    digest = Column(Text, nullable=False)
     path = Column(Text, nullable=False)
     tag = Column(Text, nullable=False)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
@@ -19,6 +30,8 @@ class Image(Base):
     namespace = Column(Text)
     cluster = Column(Text)
     env = Column(Text)
+    is_running = Column(Text, default="yes")
+    project_id = Column(Integer, ForeignKey("projects.id"), nullable=False)
 
 class CveFinding(Base):
     __tablename__ = "cve_findings"

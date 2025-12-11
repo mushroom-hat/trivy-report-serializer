@@ -1,0 +1,268 @@
+{
+  "kind": "VulnerabilityReport",
+  "apiVersion": "aquasecurity.github.io/v1alpha1",
+  "metadata": {
+    "name": "replicaset-downloader-7fbc5997f-downloader",
+    "namespace": "lj",
+    "uid": "0d9a01be-3a0c-44dd-8d40-2d3b62d8886a",
+    "resourceVersion": "63598334",
+    "generation": 1,
+    "creationTimestamp": "2025-12-10T06:47:41Z",
+    "labels": {
+      "app.kubernetes.io/managed-by": "trivy-operator",
+      "resource-spec-hash": "556b98bdfd",
+      "trivy-operator.container.name": "downloader",
+      "trivy-operator.resource.kind": "ReplicaSet",
+      "trivy-operator.resource.name": "downloader-7fbc5997f",
+      "trivy-operator.resource.namespace": "lj"
+    },
+    "annotations": {
+      "trivy-operator.aquasecurity.github.io/report-ttl": "24h0m0s"
+    },
+    "ownerReferences": [
+      {
+        "apiVersion": "apps/v1",
+        "kind": "ReplicaSet",
+        "name": "downloader-7fbc5997f",
+        "uid": "238898e9-b361-46cb-92e2-3269d488f77e",
+        "controller": true,
+        "blockOwnerDeletion": false
+      }
+    ]
+  },
+  "report": {
+    "updateTimestamp": "2025-12-10T07:47:41Z",
+    "scanner": {
+      "name": "Trivy",
+      "vendor": "Aqua Security",
+      "version": "0.66.0"
+    },
+    "registry": {
+      "server": "quay.io"
+    },
+    "artifact": {
+      "repository": "starline1733/lj-uploader",
+      "digest": "sha256:ddd1cc9a09cddc97d97c6b76a29131696941b14b6af164dd68c377ead16af94",
+      "tag": "0.12.0"
+    },
+    "os": {
+      "family": "alpine",
+      "name": "3.20.6"
+    },
+    "summary": {
+      "criticalCount": 0,
+      "highCount": 2,
+      "mediumCount": 7,
+      "lowCount": 5,
+      "unknownCount": 0,
+      "noneCount": 0
+    },
+    "vulnerabilities": [
+      {
+        "vulnerabilityID": "CVE-2024-58251",
+        "resource": "busybox",
+        "installedVersion": "1.36.1-r29",
+        "fixedVersion": "1.36.1-r31",
+        "publishedDate": "2025-04-23T18:16:03Z",
+        "lastModifiedDate": "2025-04-29T13:52:47Z",
+        "severity": "MEDIUM",
+        "title": "In netstat in BusyBox through 1.37.0, local users can launch of networ ...",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2024-58251",
+        "links": [],
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/busybox@1.36.1-r29?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-46394",
+        "resource": "busybox",
+        "installedVersion": "1.36.1-r29",
+        "fixedVersion": "1.36.1-r31",
+        "publishedDate": "2025-04-23T16:15:48Z",
+        "lastModifiedDate": "2025-09-24T14:38:22Z",
+        "severity": "LOW",
+        "title": "In tar in BusyBox through 1.37.0, a TAR archive can have filenames hid ...",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-46394",
+        "links": [],
+        "score": 3.3,
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/busybox@1.36.1-r29?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2024-58251",
+        "resource": "busybox-binsh",
+        "installedVersion": "1.36.1-r29",
+        "fixedVersion": "1.36.1-r31",
+        "publishedDate": "2025-04-23T18:16:03Z",
+        "lastModifiedDate": "2025-04-29T13:52:47Z",
+        "severity": "MEDIUM",
+        "title": "In netstat in BusyBox through 1.37.0, local users can launch of networ ...",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2024-58251",
+        "links": [],
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/busybox-binsh@1.36.1-r29?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-46394",
+        "resource": "busybox-binsh",
+        "installedVersion": "1.36.1-r29",
+        "fixedVersion": "1.36.1-r31",
+        "publishedDate": "2025-04-23T16:15:48Z",
+        "lastModifiedDate": "2025-09-24T14:38:22Z",
+        "severity": "LOW",
+        "title": "In tar in BusyBox through 1.37.0, a TAR archive can have filenames hid ...",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-46394",
+        "links": [],
+        "score": 3.3,
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/busybox-binsh@1.36.1-r29?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-9230",
+        "resource": "libcrypto3",
+        "installedVersion": "3.3.3-r0",
+        "fixedVersion": "3.3.5-r0",
+        "publishedDate": "2025-09-30T14:15:41Z",
+        "lastModifiedDate": "2025-11-04T22:16:45Z",
+        "severity": "MEDIUM",
+        "title": "openssl: Out-of-bounds read & write in RFC 3211 KEK Unwrap",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-9230",
+        "links": [],
+        "score": 5.6,
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/libcrypto3@3.3.3-r0?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-9231",
+        "resource": "libcrypto3",
+        "installedVersion": "3.3.3-r0",
+        "fixedVersion": "3.3.5-r0",
+        "publishedDate": "2025-09-30T14:15:41Z",
+        "lastModifiedDate": "2025-11-04T22:16:45Z",
+        "severity": "MEDIUM",
+        "title": "openssl: Timing side-channel in SM2 algorithm on 64 bit ARM",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-9231",
+        "links": [],
+        "score": 5.9,
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/libcrypto3@3.3.3-r0?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-9232",
+        "resource": "libcrypto3",
+        "installedVersion": "3.3.3-r0",
+        "fixedVersion": "3.3.5-r0",
+        "publishedDate": "2025-09-30T14:15:41Z",
+        "lastModifiedDate": "2025-11-04T22:16:45Z",
+        "severity": "LOW",
+        "title": "openssl: Out-of-bounds read in HTTP client no_proxy handling",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-9232",
+        "links": [],
+        "score": 3.1,
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/libcrypto3@3.3.3-r0?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-9230",
+        "resource": "libssl3",
+        "installedVersion": "3.3.3-r0",
+        "fixedVersion": "3.3.5-r0",
+        "publishedDate": "2025-09-30T14:15:41Z",
+        "lastModifiedDate": "2025-11-04T22:16:45Z",
+        "severity": "MEDIUM",
+        "title": "openssl: Out-of-bounds read & write in RFC 3211 KEK Unwrap",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-9230",
+        "links": [],
+        "score": 5.6,
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/libssl3@3.3.3-r0?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-9231",
+        "resource": "libssl3",
+        "installedVersion": "3.3.3-r0",
+        "fixedVersion": "3.3.5-r0",
+        "publishedDate": "2025-09-30T14:15:41Z",
+        "lastModifiedDate": "2025-11-04T22:16:45Z",
+        "severity": "MEDIUM",
+        "title": "openssl: Timing side-channel in SM2 algorithm on 64 bit ARM",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-9231",
+        "links": [],
+        "score": 5.9,
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/libssl3@3.3.3-r0?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-9232",
+        "resource": "libssl3",
+        "installedVersion": "3.3.3-r0",
+        "fixedVersion": "3.3.5-r0",
+        "publishedDate": "2025-09-30T14:15:41Z",
+        "lastModifiedDate": "2025-11-04T22:16:45Z",
+        "severity": "LOW",
+        "title": "openssl: Out-of-bounds read in HTTP client no_proxy handling",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-9232",
+        "links": [],
+        "score": 3.1,
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/libssl3@3.3.3-r0?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2024-58251",
+        "resource": "ssl_client",
+        "installedVersion": "1.36.1-r29",
+        "fixedVersion": "1.36.1-r31",
+        "publishedDate": "2025-04-23T18:16:03Z",
+        "lastModifiedDate": "2025-04-29T13:52:47Z",
+        "severity": "MEDIUM",
+        "title": "In netstat in BusyBox through 1.37.0, local users can launch of networ ...",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2024-58251",
+        "links": [],
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/ssl_client@1.36.1-r29?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-46394",
+        "resource": "ssl_client",
+        "installedVersion": "1.36.1-r29",
+        "fixedVersion": "1.36.1-r31",
+        "publishedDate": "2025-04-23T16:15:48Z",
+        "lastModifiedDate": "2025-09-24T14:38:22Z",
+        "severity": "LOW",
+        "title": "In tar in BusyBox through 1.37.0, a TAR archive can have filenames hid ...",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-46394",
+        "links": [],
+        "score": 3.3,
+        "target": "",
+        "packagePURL": "pkg:apk/alpine/ssl_client@1.36.1-r29?arch=x86_64&distro=3.20.6"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-66418",
+        "resource": "urllib3",
+        "installedVersion": "2.5.0",
+        "fixedVersion": "2.6.0",
+        "publishedDate": "2025-12-05T16:15:51Z",
+        "lastModifiedDate": "2025-12-08T18:26:49Z",
+        "severity": "HIGH",
+        "title": "urllib3 is a user-friendly HTTP client library for Python. Starting in ...",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-66418",
+        "links": [],
+        "target": "",
+        "packagePURL": "pkg:pypi/urllib3@2.5.0"
+      },
+      {
+        "vulnerabilityID": "CVE-2025-66471",
+        "resource": "urllib3",
+        "installedVersion": "2.5.0",
+        "fixedVersion": "2.6.0",
+        "publishedDate": "2025-12-05T17:16:04Z",
+        "lastModifiedDate": "2025-12-08T18:26:49Z",
+        "severity": "HIGH",
+        "title": "urllib3 is a user-friendly HTTP client library for Python. Starting in ...",
+        "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-66471",
+        "links": [],
+        "target": "",
+        "packagePURL": "pkg:pypi/urllib3@2.5.0"
+      }
+    ]
+  }
+}
