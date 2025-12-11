@@ -58,5 +58,5 @@ async def handle_vulnerability_report(body: dict, db: Session):
         create_detection(db, finding.id, scanner_version)
 
     db.commit()
-
-    return {"status": "ok", "type": "VulnerabilityReport", "namespace": namespace}
+    report_name = body.get("metadata", {}).get("name", "unknown")
+    return {"status": "ok", "message": f"VulnerabilityReport {report_name} ingested."}
