@@ -1,20 +1,22 @@
-from sqlalchemy import Column, Integer, String, Text, Numeric, TIMESTAMP, ForeignKey, JSON, UniqueConstraint
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy import Column, Integer, String, Text, Numeric, TIMESTAMP, ForeignKey, JSON, Boolean, UniqueConstraint
+from sqlalchemy.orm import declarative_base
 from datetime import datetime
 
 Base = declarative_base()
+
 
 class Project(Base):
     __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user = Column(Text, nullable=False)
+    team = Column(Text, nullable=False)
     project = Column(Text, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
 
     __table_args__ = (
-        UniqueConstraint("user", "project", name="uq_user_project"),
+        UniqueConstraint("team", "project", name="uq_team_project"),
     )
+
 
 class Image(Base):
     __tablename__ = "images"
@@ -22,45 +24,47 @@ class Image(Base):
     id = Column(Integer, primary_key=True)
     digest = Column(Text, nullable=False)
     path = Column(Text, nullable=False)
+    project_id = Column(Integer, ForeignKey("projects.id", ondelete="CASCADE"), nullable=False)
     tag = Column(Text, nullable=False)
-    created_at = Column(TIMESTAMP, default=datetime.utcnow)
-    registry = Column(String)
-    os_family = Column(String, nullable=True)
-    os_name = Column(String, nullable=True)
+    created_at = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
+    registry = Column(Text)
+    os_family = Column(Text, nullable=True)
+    os_name = Column(Text, nullable=True)
     namespace = Column(Text)
-    cluster = Column(Text)
+    site = Column(Text)
     env = Column(Text)
-    is_running = Column(Text, default="yes")
-    project_id = Column(Integer, ForeignKey("projects.id"), nullable=False)
+    is_running = Column(Boolean, default=True)
+
 
 class CveFinding(Base):
     __tablename__ = "cve_findings"
 
     id = Column(Integer, primary_key=True)
-    image_id = Column(Integer, ForeignKey("images.id"), nullable=False)
-    cve_id = Column(Text, nullable=False)
-    package_purl = Column(Text, nullable=False)
+    image_id = Column(Integer, ForeignKey("images.id", ondelete="CASCADE"), nullable=False)
+    cve_id = Column(Text)
+    package_purl = Column(Text)
     package_name = Column(Text)
-    installed_ver = Column(Text, nullable=False)
+    installed_ver = Column(Text)
     fixed_ver = Column(Text)
-    severity = Column(String, nullable=False)
-    score = Column(Numeric(3, 1), nullable=False)
-    title = Column(Text, nullable=False)
+    severity = Column(String)
+    score = Column(Numeric(3, 1))
+    title = Column(Text)
     primary_link = Column(Text)
-    published_at = Column(TIMESTAMP, nullable=False)
-    first_seen_at = Column(TIMESTAMP, nullable=False)
-    last_seen_at = Column(TIMESTAMP, nullable=False)
-    due_at = Column(TIMESTAMP)
-    created_at = Column(TIMESTAMP, default=datetime.utcnow)
+    published_at = Column(TIMESTAMP(timezone=True), nullable=False)
+    first_seen_at = Column(TIMESTAMP(timezone=True), nullable=False)
+    last_seen_at = Column(TIMESTAMP(timezone=True), nullable=False)
+    due_at = Column(TIMESTAMP(timezone=True), nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), default=datetime.utcnow)
     links = Column(JSON, nullable=True)
-    target = Column(String, nullable=True)
+    target = Column(Text)
+    justified = Column(Boolean, default=False)
 
 
 class CveDetection(Base):
     __tablename__ = "cve_detections"
 
     id = Column(Integer, primary_key=True)
-    finding_id = Column(Integer, ForeignKey("cve_findings.id"), nullable=False)
-    detected_at = Column(TIMESTAMP, nullable=False)
-    scanner_name = Column(Text, nullable=False, default="trivy")
+    finding_id = Column(Integer, ForeignKey("cve_findings.id", ondelete="CASCADE"), nullable=False)
+    detected_at = Column(TIMESTAMP(timezone=True), nullable=False)
+    scanner_name = Column(Text, default="trivy", nullable=False)
     scanner_version = Column(Text)

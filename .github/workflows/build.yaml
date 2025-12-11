@@ -48,7 +48,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: dockerfile.prod
+          file: dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/trivy-report-serializer:latest

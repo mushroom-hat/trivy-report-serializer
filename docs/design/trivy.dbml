@@ -16,12 +16,12 @@ Enum severity_type {
 
 Table projects {
   id          serial      [pk]
-  user        text        [not null]
+  team        text        [not null]
   project     text        [not null]
   created_at  timestamptz [default: `NOW()`]
 
   indexes {
-    (user, project) [unique]
+    (team, project) [unique]
   }
 }
 
@@ -36,7 +36,7 @@ Table images {
   os_family   text
   os_name     text
   namespace   text
-  cluster     text
+  site        text
   env         text
   is_running  boolean     [default: true]
 }
@@ -60,6 +60,7 @@ Table cve_findings {
   created_at    timestamptz  [default: `NOW()`]
   links         json
   target        text
+  justified     boolean     [default: false]
 }
 
 Table cve_detections {
