@@ -18,7 +18,7 @@ Table projects {
   id          serial      [pk]
   team        text        [not null]
   project     text        [not null]
-  created_at  timestamptz [default: `NOW()`]
+  created_at  timestamptz [not null, default: `NOW()`]
 
   indexes {
     (team, project) [unique]
@@ -38,7 +38,6 @@ Table images {
   namespace   text
   site        text
   env         text
-  is_running  boolean     [default: true]
 }
 
 Table cve_findings {
@@ -69,4 +68,12 @@ Table cve_detections {
   detected_at    timestamptz [not null]
   scanner_name   text        [default: 'trivy']
   scanner_version text
+}
+
+Table project_status {
+  id            serial      [pk]
+  project_id    int         [not null, ref: > projects.id]
+  status        text        [not null]
+  calculated_at timestamptz [not null, default: `NOW()`]
+
 }

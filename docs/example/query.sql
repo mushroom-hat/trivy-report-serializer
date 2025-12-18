@@ -1,17 +1,17 @@
 WITH latest_images AS (
-    SELECT DISTINCT ON (i.project_id, i.namespace, i.env, i.cluster, i.registry, i.path)
+    SELECT DISTINCT ON (i.project_id, i.namespace, i.env, i.site, i.registry, i.path)
         i.id AS image_id,
         i.project_id,
         i.namespace,
         i.env,
-        i.cluster,
+        i.site,
         i.registry,
         i.path
     FROM images i
     WHERE i.namespace = 'lj'
       AND i.env = 'prd'
-      AND i.cluster = 'site_1'
-    ORDER BY i.project_id, i.namespace, i.env, i.cluster, i.registry, i.path, i.created_at DESC
+      AND i.site = 'site_1'
+    ORDER BY i.project_id, i.namespace, i.env, i.site, i.registry, i.path, i.created_at DESC
 ),
 
 classified_findings AS (

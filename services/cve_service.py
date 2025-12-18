@@ -53,7 +53,7 @@ def upsert_finding(db, image_id, vuln: dict, update_ts):
             published_at=published_at,
             first_seen_at=update_ts,
             last_seen_at=update_ts,
-            due_at=due_at,
+            due_at=due_at,  
         )
         db.add(finding)
         db.flush()

@@ -18,5 +18,5 @@ Base = declarative_base()
 
 # Optional: create tables if they don't exist
 def init_db():
-    import models  # import all your models
-    Base.metadata.create_all(bind=engine)
+  import models  # import all your models
+  Base.metadata.create_all(bind=engine)

@@ -42,8 +42,8 @@
     },
     "artifact": {
       "repository": "starline1733/lj-uploader",
-      "digest": "sha256:ddd1cc9a09cddc97d97c6b76a29131696941b14b6af164dd68c377ead16af94",
-      "tag": "0.12.0"
+      "digest": "sha256:ccc1cc9a09cddc97d97c6b76a29131696941b14b6af164dd68c377ead16af94",
+      "tag": "0.13.9"
     },
     "os": {
       "family": "alpine",
@@ -240,8 +240,8 @@
         "resource": "urllib3",
         "installedVersion": "2.5.0",
         "fixedVersion": "2.6.0",
-        "publishedDate": "2025-12-05T16:15:51Z",
-        "lastModifiedDate": "2025-12-08T18:26:49Z",
+        "publishedDate": "2024-12-05T16:15:51Z",
+        "lastModifiedDate": "2024-12-08T18:26:49Z",
         "severity": "HIGH",
         "title": "urllib3 is a user-friendly HTTP client library for Python. Starting in ...",
         "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-66418",
@@ -254,8 +254,8 @@
         "resource": "urllib3",
         "installedVersion": "2.5.0",
         "fixedVersion": "2.6.0",
-        "publishedDate": "2025-12-05T17:16:04Z",
-        "lastModifiedDate": "2025-12-08T18:26:49Z",
+        "publishedDate": "2024-12-05T17:16:04Z",
+        "lastModifiedDate": "2024-12-08T18:26:49Z",
         "severity": "HIGH",
         "title": "urllib3 is a user-friendly HTTP client library for Python. Starting in ...",
         "primaryLink": "https://avd.aquasec.com/nvd/cve-2025-66471",
