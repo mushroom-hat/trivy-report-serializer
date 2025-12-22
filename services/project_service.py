@@ -50,9 +50,7 @@ def update_project_status(db, project_id):
       .distinct(Image.project_id, Image.path)
       .subquery()
   )
-  image_ids = [row.image_id for row in db.query(latest_images_subq.c.image_id).all()]
-
-  print(f"Latest image IDs for project {project_id}: {image_ids}")
+  
   # --- CVEs from latest images only, only critical or high
   findings = (
       db.query(
