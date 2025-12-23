@@ -76,4 +76,4 @@ def delete_old_images(db, project_id, path, keep_image_id):
       synchronize_session=False
   )
 
-  db.flush()  # commit optional here if handled outside
+  db.flush()

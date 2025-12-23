@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
-RUN pip install --user -r requirements.txt
+RUN pip install -r requirements.txt
 
 
 # -------------------------------------------------------
@@ -30,10 +30,7 @@ FROM base AS production
 RUN useradd -m appuser
 
 # Copy installed packages from builder
-COPY --from=builder /root/.local /root/.local
-
-# Ensure Python finds the installed packages
-ENV PATH=/root/.local/bin:$PATH
+COPY --from=builder /usr/local /usr/local
 
 # Copy application source code
 COPY . .
@@ -43,10 +40,10 @@ RUN chown -R appuser:appuser /app
 
 USER appuser
 
-EXPOSE 8000
+EXPOSE 80
 
 # Production server (Gunicorn + Uvicorn workers)
 CMD ["gunicorn", "main:app", \
      "--workers", "4", \
      "--worker-class", "uvicorn.workers.UvicornWorker", \
-     "--bind", "0.0.0.0:8000"]
+     "--bind", "0.0.0.0:80"]

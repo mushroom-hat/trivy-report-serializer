@@ -91,7 +91,7 @@ async def enrich_vulnerability_reports(body: dict):
   return enriched
 
 async def send_to_hub(report: dict):
-  hub_url = settings.hub_url.rstrip("/") + "/api/v1/webhooks/trivy-vulnerability-report"
+  hub_url = settings.hub_url.rstrip("/") + "/trivy-webhook"
   api_key = settings.hub_api_key
 
   headers = {
@@ -122,7 +122,7 @@ async def handle_vulnerability_report(body: dict, db: Session):
       project_id=project.id
     )
 
-    # Delete older images for same project/path/tag
+    # Delete older images for same project/path
     delete_old_images(db, project.id, image_info["path"], image.id)
 
     # Upsert CVE findings
