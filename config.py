@@ -7,8 +7,8 @@ class Settings(BaseSettings):
   site: str = "local"
   sla_days: int = 90
   mode: Literal["hub", "non-hub"] = "non-hub"
-  hub_url: str = "http://localhost:8000"
-  hub_api_key: str = "changeme"
+  hub_url: str = "http://localhost:80"
+  api_key: str = "changeme"
 
   class Config:
       env_file = ".env"

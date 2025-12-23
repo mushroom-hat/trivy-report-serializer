@@ -30,7 +30,7 @@ async def trivy_webhook(request: Request, db: Session = Depends(get_db)):
     # API key check for hub mode
     api_key = request.headers.get("X-API-KEY")
     if settings.mode == "hub":
-      if not api_key or not hmac.compare_digest(api_key, settings.hub_api_key):
+      if not api_key or not hmac.compare_digest(api_key, settings.api_key):
         logger.warning("Unauthorized request, invalid or missing API key")
         return JSONResponse(
           status_code=status.HTTP_401_UNAUTHORIZED,
@@ -92,7 +92,7 @@ async def enrich_vulnerability_reports(body: dict):
 
 async def send_to_hub(report: dict):
   hub_url = settings.hub_url.rstrip("/") + "/trivy-webhook"
-  api_key = settings.hub_api_key
+  api_key = settings.api_key
 
   headers = {
     "Content-Type": "application/json",
