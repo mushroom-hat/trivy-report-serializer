@@ -1,0 +1,13 @@
+securityContext:
+  runAsUser: 0
+  runAsGroup: 0
+  fsGroup: 0
+
+containerSecurityContext:
+  enabled: true
+  allowPrivilegeEscalation: false
+
+existingSecret: pgadmin4
+env:
+  # can be email or nickname
+  email: starforge@test.com

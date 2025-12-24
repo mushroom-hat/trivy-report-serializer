@@ -40,10 +40,10 @@ RUN chown -R appuser:appuser /app
 
 USER appuser
 
-EXPOSE 80
+EXPOSE 8080
 
 # Production server (Gunicorn + Uvicorn workers)
 CMD ["gunicorn", "main:app", \
      "--workers", "4", \
      "--worker-class", "uvicorn.workers.UvicornWorker", \
-     "--bind", "0.0.0.0:80"]
+     "--bind", "0.0.0.0:8080"]

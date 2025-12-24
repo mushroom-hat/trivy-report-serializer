@@ -15,6 +15,11 @@ from services.project_service import get_or_create_project, update_project_statu
 from utils.parsing import parse_image_info
 
 router = APIRouter()
+LOG_LEVEL = settings.log_level.upper()
+logging.basicConfig(
+    level=getattr(logging, LOG_LEVEL, logging.INFO),
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
 logger = logging.getLogger("trivy-webhook")
 
 def get_db():
@@ -31,7 +36,7 @@ async def trivy_webhook(request: Request, db: Session = Depends(get_db)):
     api_key = request.headers.get("X-API-KEY")
     if settings.mode == "hub":
       if not api_key or not hmac.compare_digest(api_key, settings.api_key):
-        logger.warning("Unauthorized request, invalid or missing API key")
+        logger.warning(f"Unauthorized request, invalid or missing API key. expected {settings.api_key}, got {api_key}")
         return JSONResponse(
           status_code=status.HTTP_401_UNAUTHORIZED,
           content={"error": "Invalid or missing API key"},
@@ -50,7 +55,6 @@ async def trivy_webhook(request: Request, db: Session = Depends(get_db)):
     # Identify payload kind
     kind = body.get("kind") or body.get("report", {}).get("kind")
     if kind != "VulnerabilityReport":
-      logger.warning("Unsupported report type: %s", kind)
       return JSONResponse(
           status_code=status.HTTP_400_BAD_REQUEST,
           content={"error": f"Unsupported report type: {kind}"},
@@ -108,7 +112,7 @@ async def handle_vulnerability_report(body: dict, db: Session):
     namespace = body.get("metadata", {}).get("namespace")
     image_info = parse_image_info(body)
     update_ts = body["report"].get("updateTimestamp")
-    scanner_version = body.get("scanner", {}).get("version")
+    scanner_version = body["report"].get("scanner", {}).get("version")
     vulns = body["report"].get("vulnerabilities", [])
 
     # Get project from image path
@@ -136,6 +140,7 @@ async def handle_vulnerability_report(body: dict, db: Session):
 
     db.commit()
     report_name = body.get("metadata", {}).get("name", "unknown")
+    logger.info(f"Processed VulnerabilityReport {report_name} for image {image_info['path']}:{image_info['tag']}")
     return {"status": "ok", "message": f"VulnerabilityReport {report_name} ingested."}
 
   except SQLAlchemyError as e:

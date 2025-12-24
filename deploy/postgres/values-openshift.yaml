@@ -1,0 +1,12 @@
+auth:
+  username: postgres
+  password: postgres
+  database: trivy
+primary:
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClassName: crc-csi-hostpath-provisioner
+
+replication:
+  enabled: false

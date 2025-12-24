@@ -1,0 +1,4 @@
+operator:
+  webhookBroadcastURL: "http://startrack.trivy-system.svc.cluster.local:8080/trivy-webhook"
+  webhookBroadcastCustomHeaders: "X-API-KEY: changeme"
+  scanJobsConcurrentLimit: 5

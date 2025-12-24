@@ -22,15 +22,15 @@ spec:
             - containerPort: {{ .Values.service.port }}
           env:
             {{- toYaml .Values.env | nindent 12 }}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: DATABASE_URL
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: API_KEY
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-secrets
-              key: DATABASE_URL
-        - name: API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-secrets
-              key: API_KEY
