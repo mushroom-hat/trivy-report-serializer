@@ -6,4 +6,4 @@ oc apply -n trivy-system -f ./deploy/startrack/secrets.yaml
 oc cp trivy_schema.sql startrack/postgresql-0:/tmp
 psql -f trivy_schema.sql -U postgres -d postgres
 
-helm upgrade --install pgadmin4 runix/pgadmin4 -n trivy-system
+helm upgrade --install pgadmin4 runix/pgadmin4 -n trivy-system -f ./deploy/pgadmin/values.yaml
