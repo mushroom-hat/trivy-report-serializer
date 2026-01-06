@@ -6,9 +6,9 @@ from datetime import datetime
 def calculate_status(published_at, last_seen_at):
   """Return Low/Medium/High based on CVE age (days)."""
   age_days = (last_seen_at - published_at).days
-  if age_days < 30:
+  if age_days < 60:
       return StatusLevel.LOW
-  elif 30 <= age_days < 90:
+  elif 60 <= age_days < 90:
       return StatusLevel.MEDIUM
   else:
       return StatusLevel.HIGH

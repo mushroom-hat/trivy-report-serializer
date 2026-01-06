@@ -19,6 +19,6 @@ ORDER BY cf.severity DESC, cf.score DESC;
 
 --
 UPDATE cve_findings
-SET justified = false
+SET justified = true
 WHERE id in (323,324,325,326,327,328,330,337,339,347,354,355,360,361,362,363);
 SELECT * FROM public.project_cve_findings_view WHERE project = 'ocp-release';

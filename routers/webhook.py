@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 import httpx
 import logging
 import hmac
-
+import asyncio
 from config import settings
 from database import SessionLocal
 from services.image_service import insert_image, delete_old_images
@@ -94,18 +94,38 @@ async def enrich_vulnerability_reports(body: dict):
 
   return enriched
 
-async def send_to_hub(report: dict):
-  hub_url = settings.hub_url.rstrip("/") + "/trivy-webhook"
-  api_key = settings.api_key
+async def send_to_hub(report: dict, * , retries: int = 3, delay: float = 1.0,):
+    '''
+    Send the vulnerability report to the hub webhook endpoint.
+    Retries on 5xx errors.
+    '''
+    hub_url = settings.hub_url.rstrip("/") + "/trivy-webhook"
+    api_key = settings.api_key
 
-  headers = {
-    "Content-Type": "application/json",
-    "X-API-KEY": api_key,
-  }
+    headers = {
+        "Content-Type": "application/json",
+        "X-API-KEY": api_key,
+    }
 
-  async with httpx.AsyncClient() as client:
-    response = await client.post(hub_url, json=report, headers=headers)
-    response.raise_for_status()
+    async with httpx.AsyncClient() as client:
+      for attempt in range(1, retries + 1):
+        response = await client.post(
+          hub_url,
+          json=report,
+          headers=headers,
+        )
+
+        # Success
+        if response.status_code < 500:
+          response.raise_for_status()
+          return
+
+        # 5xx → retry
+        if attempt < retries:
+          await asyncio.sleep(delay)
+        else:
+          # Final attempt failed
+          response.raise_for_status()
 
 async def handle_vulnerability_report(body: dict, db: Session):
   try:
@@ -143,12 +163,18 @@ async def handle_vulnerability_report(body: dict, db: Session):
     logger.info(f"Processed VulnerabilityReport {report_name} for image {image_info['path']}:{image_info['tag']}")
     return {"status": "ok", "message": f"VulnerabilityReport {report_name} ingested."}
 
-  except SQLAlchemyError as e:
-    db.rollback()
-    logger.exception("Database error while processing VulnerabilityReport")
-    return {"status": "error", "message": "Database error occurred."}
+  except SQLAlchemyError:
+      db.rollback()
+      logger.exception("Database error while processing VulnerabilityReport")
+      raise HTTPException(
+          status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+          detail="Database error occurred",
+      )
 
-  except Exception as e:
-    db.rollback()
-    logger.exception("Unexpected error while processing VulnerabilityReport")
-    return {"status": "error", "message": "Unexpected error occurred."}
+  except Exception:
+      db.rollback()
+      logger.exception("Unexpected error while processing VulnerabilityReport")
+      raise HTTPException(
+          status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+          detail="Unexpected error occurred",
+      )

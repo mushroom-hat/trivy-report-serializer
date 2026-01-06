@@ -1,6 +1,6 @@
 CREATE OR REPLACE VIEW project_cve_findings_view AS
 SELECT
-  p.project,
+  p.project_name,
   i.path AS image_path,
   i.tag AS image_tag,
   cf.cve_id,

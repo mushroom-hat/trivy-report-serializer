@@ -4,7 +4,8 @@ from config import settings
 
 def insert_image(db, namespace: str, info: dict, project_id: int):
   '''
-  Upsert an image record based on the provided info and namespace.
+  Insert an image record based on the provided info and namespace.
+  Returns the image object
   '''
   # Try to find an existing image with the same path, tag, env, site, namespace
   image = (

@@ -4,12 +4,18 @@ image:
   registry: docker.io
   repository: dpage/pgadmin4
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "9.11.0"
+  tag: "9.9.0"
 
 securityContext:
   runAsUser: 0
   runAsGroup: 0
   fsGroup: 0
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  portName: http
 
 containerSecurityContext:
   enabled: true
@@ -19,3 +25,10 @@ existingSecret: pgadmin4
 env:
   # can be email or nickname
   email: starforge@test.com
+  username: starforge
+  variables:
+    - name: PGADMIN_LISTEN_PORT
+      value: "8080"
+
+containerPorts:
+  http: 8080
